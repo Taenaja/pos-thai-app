@@ -855,6 +855,10 @@
   function closeOverlay(id) {
     var el = document.getElementById(id);
     if (el) el.classList.remove('open');
+    if (id === 'overlay-customize') {
+      salesSelectedMenuId = null;
+      if (currentScreen === 'sales') renderSales();
+    }
   }
   function closeAllOverlays() {
     document.querySelectorAll('.overlay.open').forEach(function (el) { el.classList.remove('open'); });
@@ -864,6 +868,10 @@
     // Close overlay by clicking backdrop
     if (e.target.classList.contains('overlay')) {
       e.target.classList.remove('open');
+      if (e.target.id === 'overlay-customize') {
+        salesSelectedMenuId = null;
+        if (currentScreen === 'sales') renderSales();
+      }
       return;
     }
     var closeBtn = e.target.closest('[data-close]');
@@ -906,6 +914,7 @@
      7. SALES SCREEN
      ======================================================================= */
   var salesFilter = { category: 'all', search: '' };
+  var salesSelectedMenuId = null;
 
   function cartTotal() {
     return state.cart.reduce(function (s, it) { return s + it.lineTotal; }, 0);
@@ -941,8 +950,9 @@
         var disabled = !m.active;
         var thumb = resolveMenuThumbnail(m);
         var category = state.categories.find(function (c) { return c.id === m.categoryId; });
+        var selected = salesSelectedMenuId === m.id;
         return '' +
-          '<div class="menu-card' + (disabled ? ' unavailable' : '') + '">' +
+          '<div class="menu-card' + (disabled ? ' unavailable' : '') + (selected ? ' selected' : '') + '">' +
             '<div class="menu-card-thumb">' +
               '<img src="' + escapeHtml(thumb) + '" alt="' + escapeHtml(m.name) + '" class="menu-card-thumb-image">' +
               '<span class="menu-card-thumb-fallback"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg></span>' +
@@ -955,7 +965,7 @@
               '<div class="menu-card-name">' + escapeHtml(m.name) + '</div>' +
               '<div class="menu-card-bottom">' +
                 '<span class="menu-card-price">' + money(m.price) + ' บ.</span>' +
-                '<button class="btn-add-round" data-action="open-customize" data-id="' + m.id + '" ' + (disabled ? 'disabled' : '') + '>+</button>' +
+                '<button class="btn-add-round" data-action="open-customize" data-id="' + m.id + '" ' + (disabled ? 'disabled' : '') + '>' + (selected ? '✓' : '+') + '</button>' +
               '</div>' +
             '</div>' +
           '</div>';
@@ -986,6 +996,8 @@
   function openCustomizeSheet(menuItemId, editingCartUid) {
     var menuItem = state.menuItems.find(function (m) { return m.id === menuItemId; });
     if (!menuItem) return;
+    salesSelectedMenuId = menuItemId;
+    if (currentScreen === 'sales') renderSales();
     var existing = editingCartUid ? state.cart.find(function (c) { return c.id === editingCartUid; }) : null;
 
     customizeState = {
