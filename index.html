@@ -667,7 +667,7 @@
       return {
         id: uid(), menuItemId: menuId, name: name, basePrice: price, qty: qty,
         addons: addonList, comments: commentList, note: note || '',
-        unitPrice: unitPrice, lineTotal: unitPrice * qty
+        unitPrice: unitPrice, lineTotal: unitPrice * qty, started: false
       };
     }
 
@@ -1017,6 +1017,7 @@
     customizeState = {
       menuItem: menuItem,
       qty: existing ? existing.qty : 1,
+      orderMode: existing ? (existing.orderMode || 'takeaway') : 'takeaway',
       selectedAddonIds: new Set(existing ? existing.addons.map(function (a) { return a.id; }) : []),
       selectedCommentIds: new Set(existing ? state.comments.filter(function (c) { return existing.comments.indexOf(c.text) !== -1; }).map(function (c) { return c.id; }) : []),
       note: existing ? existing.note : '',
@@ -1033,6 +1034,18 @@
     var activeComments = state.comments.filter(function (c) { return c.active; });
 
     var html = '';
+    html += '<div class="order-mode-section" style="padding:0 0 12px;">' +
+      '<div class="order-mode-group" role="radiogroup" aria-label="รูปแบบการสั่ง">' +
+        '<label class="order-mode-option">' +
+          '<input type="radio" name="order-mode" value="takeaway"' + (cs.orderMode === 'takeaway' ? ' checked' : '') + '>' +
+          '<span>สั่งกลับบ้าน</span>' +
+        '</label>' +
+        '<label class="order-mode-option">' +
+          '<input type="radio" name="order-mode" value="dinein"' + (cs.orderMode === 'dinein' ? ' checked' : '') + '>' +
+          '<span>ทานที่ร้าน</span>' +
+        '</label>' +
+      '</div>' +
+    '</div>';
     html += '<div class="flex-between">';
     html += '<div><div class="font-bold" style="font-size:var(--fs-h3)">' + escapeHtml(cs.menuItem.name) + '</div>';
     html += '<div class="text-secondary mt-8" style="margin-top:2px">ราคาเริ่มต้น ' + money(cs.menuItem.price) + ' บาท</div></div>';
@@ -1069,6 +1082,9 @@
     document.getElementById('customize-body').innerHTML = html;
     var noteEl = document.getElementById('cust-note');
     noteEl.addEventListener('input', function (e) { customizeState.note = e.target.value; });
+    document.querySelectorAll('#customize-body input[name="order-mode"]').forEach(function (radio) {
+      radio.addEventListener('change', function (e) { customizeState.orderMode = e.target.value; });
+    });
 
     updateCustomizeTotal();
   }
@@ -1128,6 +1144,7 @@
       name: cs.menuItem.name,
       basePrice: cs.menuItem.price,
       qty: cs.qty,
+      orderMode: cs.orderMode,
       addons: addons,
       comments: comments,
       note: cs.note || '',
@@ -1172,10 +1189,14 @@
       if (it.addons.length) details.push(it.addons.map(function (a) { return a.name; }).join(', '));
       if (it.comments.length) details.push(it.comments.join(', '));
       if (it.note) details.push('โน้ต: ' + it.note);
+      var orderModeLabel = it.orderMode === 'dinein' ? 'ทานที่ร้าน' : 'สั่งกลับบ้าน';
       return '' +
         '<div class="cart-item-row">' +
           '<div class="cart-item-top">' +
-            '<div><div class="cart-item-name">' + escapeHtml(it.name) + ' × ' + it.qty + '</div>' +
+            '<div><div class="cart-item-name-row">' +
+              '<span class="cart-item-name">' + escapeHtml(it.name) + ' × ' + it.qty + '</span>' +
+              '<span class="order-type-badge">' + orderModeLabel + '</span>' +
+            '</div>' +
             (details.length ? '<div class="cart-item-detail">' + escapeHtml(details.join(' · ')) + '</div>' : '') +
             '</div>' +
             '<div class="cart-item-price">' + money(it.lineTotal) + ' บ.</div>' +
@@ -1199,7 +1220,8 @@
     var total = subtotal - discount;
     summaryWrap.innerHTML = '' +
       '<div class="card">' +
-        '<div class="flex-between"><span class="text-secondary">ยอดรวมอาหาร</span><span>' + money(subtotal) + ' บาท</span></div>' +
+        '<div class="flex-between"><span class="text-secondary">จำนวน</span><span>' + cartCount() + ' รายการ</span></div>' +
+        '<div class="flex-between mt-8"><span class="text-secondary">ยอดรวมอาหาร</span><span>' + money(subtotal) + ' บาท</span></div>' +
         (discount > 0 ? '<div class="flex-between mt-8"><span class="text-secondary">ส่วนลด</span><span class="text-danger">-' + money(discount) + ' บาท</span></div>' : '') +
         '<div class="divider"></div>' +
         '<div class="flex-between"><span class="font-bold" style="font-size:var(--fs-h3)">ยอดสุทธิ</span><span class="font-bold" style="font-size:var(--fs-h2);color:var(--color-primary-dark)">' + money(total) + ' บาท</span></div>' +
@@ -1249,7 +1271,7 @@
       number: nextOrderLabel(),
       status: 'pending',
       createdAt: Date.now(),
-      items: state.cart,
+      items: state.cart.map(function (it) { return Object.assign({}, it, { started: false }); }),
       subtotal: subtotal,
       discount: 0,
       total: subtotal
@@ -1312,19 +1334,29 @@
     listEl.innerHTML = list.map(function (o) {
       var mins = waitMinutes(o.createdAt);
       var overdue = (o.status === 'pending' || o.status === 'preparing') && mins > 15;
+      var canTrackItems = (o.status === 'pending' || o.status === 'preparing');
       var itemsHtml = o.items.map(function (it) {
         var tags = it.addons.map(function (a) { return a.name; }).concat(it.comments);
+        var itemActionHtml = '';
+        if (canTrackItems) {
+          itemActionHtml = it.started
+            ? '<span class="order-item-started">กำลังทำ</span>'
+            : '<button class="order-item-start-btn" data-action="order-item-start" data-id="' + o.id + '" data-item-id="' + it.id + '">เริ่มทำ</button>';
+        }
         return '' +
           '<div class="order-item-line">' +
-            '<div class="order-item-name">' + escapeHtml(it.name) + ' × ' + it.qty + '</div>' +
-            (tags.length ? '<div class="order-item-tags">' + tags.map(function (t) { return '<span class="order-item-tag">' + escapeHtml(t) + '</span>'; }).join('') + '</div>' : '') +
-            (it.note ? '<div class="order-item-tags"><span class="order-item-tag">โน้ต: ' + escapeHtml(it.note) + '</span></div>' : '') +
+            '<div class="order-item-main">' +
+              '<div class="order-item-name">' + escapeHtml(it.name) + ' × ' + it.qty + '</div>' +
+              (tags.length ? '<div class="order-item-tags">' + tags.map(function (t) { return '<span class="order-item-tag">' + escapeHtml(t) + '</span>'; }).join('') + '</div>' : '') +
+              (it.note ? '<div class="order-item-tags"><span class="order-item-tag">โน้ต: ' + escapeHtml(it.note) + '</span></div>' : '') +
+            '</div>' +
+            (itemActionHtml ? '<div class="order-item-action">' + itemActionHtml + '</div>' : '') +
           '</div>';
       }).join('');
 
       var actionBtn = '';
-      if (o.status === 'pending') actionBtn = '<button class="btn btn-primary btn-sm" data-action="order-start" data-id="' + o.id + '">เริ่มทำ</button>';
-      else if (o.status === 'preparing') actionBtn = '<button class="btn btn-primary btn-sm" data-action="order-done" data-id="' + o.id + '">ทำเสร็จแล้ว</button>';
+      if (o.status === 'pending') actionBtn = '<button class="btn btn-primary btn-md" data-action="order-start" data-id="' + o.id + '">เริ่มทำ</button>';
+      else if (o.status === 'preparing') actionBtn = '<button class="btn btn-primary btn-md" data-action="order-done" data-id="' + o.id + '">ทำเสร็จแล้ว</button>';
 
       var waitHtml = '';
       if (o.status === 'pending' || o.status === 'preparing') {
@@ -1372,10 +1404,24 @@
     if (action === 'order-start') {
       order.status = 'preparing';
       order.startedAt = Date.now();
+      order.items.forEach(function (it) { it.started = true; });
       save();
       renderOrders();
       updateOrdersNavBadge();
       showToast('เริ่มทำออเดอร์ ' + order.number + ' แล้ว', 'success');
+    } else if (action === 'order-item-start') {
+      var itemId = btn.getAttribute('data-item-id');
+      var item = order.items.find(function (it) { return it.id === itemId; });
+      if (item) {
+        item.started = true;
+        if (order.status === 'pending') {
+          order.status = 'preparing';
+          order.startedAt = Date.now();
+        }
+        save();
+        renderOrders();
+        updateOrdersNavBadge();
+      }
     } else if (action === 'order-done') {
       order.status = 'done';
       order.doneAt = Date.now();
