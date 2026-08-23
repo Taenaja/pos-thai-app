@@ -1,0 +1,12 @@
+name = "pos-thai-app"
+main = "worker.js"
+compatibility_date = "2026-08-23"
+
+[assets]
+directory = "."
+binding = "ASSETS"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "pos-thai-db"
+database_id = "a22bc7fb-b88d-4f47-8ffd-ac781434f8f2"
