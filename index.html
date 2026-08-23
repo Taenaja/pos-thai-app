@@ -975,9 +975,7 @@
               '<span class="menu-card-thumb-fallback"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg></span>' +
             '</div>' +
             '<div class="menu-card-body">' +
-              '<div class="menu-card-meta">' +
-                (disabled ? '<span class="badge badge-gray">งดขาย</span>' : '<span></span>') +
-              '</div>' +
+              (disabled ? '<div class="menu-card-meta"><span class="badge badge-gray">งดขาย</span></div>' : '') +
               '<div class="menu-card-name">' + escapeHtml(m.name) + '</div>' +
               '<div class="menu-card-bottom">' +
                 '<span class="menu-card-price">' + money(m.price) + ' บ.</span>' +
