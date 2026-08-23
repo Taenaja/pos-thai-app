@@ -552,22 +552,9 @@ img { max-width: 100%; }
 .menu-card-meta {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 6px;
   min-height: 18px;
-}
-.menu-card-category {
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--color-primary-dark);
-  background: rgba(245, 158, 11, 0.12);
-  border-radius: 999px;
-  padding: 4px 8px;
-  letter-spacing: 0.02em;
-}
-.menu-card.selected .menu-card-category {
-  background: rgba(31, 160, 85, 0.12);
-  color: var(--color-secondary-dark);
 }
 .menu-card-name {
   font-weight: 800;
