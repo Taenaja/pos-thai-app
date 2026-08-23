@@ -940,6 +940,7 @@
       grid.innerHTML = items.map(function (m) {
         var disabled = !m.active;
         var thumb = resolveMenuThumbnail(m);
+        var category = state.categories.find(function (c) { return c.id === m.categoryId; });
         return '' +
           '<div class="menu-card' + (disabled ? ' unavailable' : '') + '">' +
             '<div class="menu-card-thumb">' +
@@ -947,7 +948,11 @@
               '<span class="menu-card-thumb-fallback"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg></span>' +
             '</div>' +
             '<div class="menu-card-body">' +
-              '<div class="menu-card-name">' + escapeHtml(m.name) + (disabled ? ' <span class="badge badge-gray">งดขาย</span>' : '') + '</div>' +
+              '<div class="menu-card-meta">' +
+                '<span class="menu-card-category">' + escapeHtml(category ? category.name : 'เมนู') + '</span>' +
+                (disabled ? '<span class="badge badge-gray">งดขาย</span>' : '') +
+              '</div>' +
+              '<div class="menu-card-name">' + escapeHtml(m.name) + '</div>' +
               '<div class="menu-card-bottom">' +
                 '<span class="menu-card-price">' + money(m.price) + ' บ.</span>' +
                 '<button class="btn-add-round" data-action="open-customize" data-id="' + m.id + '" ' + (disabled ? 'disabled' : '') + '>+</button>' +
@@ -1445,12 +1450,18 @@
       emptyEl.classList.add('hidden');
       listEl.innerHTML = items.map(function (m) {
         var cat = state.categories.find(function (c) { return c.id === m.categoryId; });
+        var thumb = resolveMenuThumbnail(m);
         return '' +
           '<div class="list-row">' +
+            '<div class="list-row-media"><img src="' + escapeHtml(thumb) + '" alt="' + escapeHtml(m.name) + '"></div>' +
             '<div class="list-row-main">' +
-              '<div class="list-row-title">' + escapeHtml(m.name) + '</div>' +
-              '<div class="list-row-sub">' + (cat ? escapeHtml(cat.name) : 'ไม่มีหมวดหมู่') + ' · ' + money(m.price) + ' บาท</div>' +
+              '<div class="list-row-title-row">' +
+                '<div class="list-row-title">' + escapeHtml(m.name) + '</div>' +
+                '<span class="list-row-price">' + money(m.price) + ' บาท</span>' +
+              '</div>' +
+              '<div class="list-row-sub">' + (cat ? escapeHtml(cat.name) : 'ไม่มีหมวดหมู่') + '</div>' +
             '</div>' +
+            '<div class="list-row-status"><span class="badge ' + (m.active ? 'badge-green' : 'badge-gray') + '">' + (m.active ? 'เปิดขาย' : 'งดขาย') + '</span></div>' +
             '<label class="switch"><input type="checkbox" data-action="toggle-menu-active" data-id="' + m.id + '" ' + (m.active ? 'checked' : '') + '><span class="switch-track"></span></label>' +
             '<div class="list-row-actions">' +
               '<button class="icon-btn-plain" data-action="edit-menu" data-id="' + m.id + '"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z"/></svg></button>' +
