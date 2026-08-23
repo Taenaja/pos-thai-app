@@ -14,15 +14,22 @@
        SCREEN: ขาย (Sales / Order creation)
   ========================================================== -->
   <section class="screen active" id="screen-sales">
-    <header class="app-header">
-      <div class="header-row">
-        <div>
-          <h1 class="header-title">ครัวตามสั่ง</h1>
-          <div class="header-sub" id="sales-order-number">ออเดอร์ A001</div>
+    <header class="app-header brand-header">
+      <div class="header-row brand-row">
+        <div class="brand-block">
+          <img src="source/LOGO.png" alt="ร้านอาหารตามสั่ง" class="brand-logo">
+          <div>
+            <div class="brand-kicker">ร้านอาหารตามสั่ง</div>
+            <h1 class="header-title">เลี้ยวผัด อัดลาน</h1>
+          </div>
         </div>
         <button class="btn-icon" id="btn-goto-orders-badge" aria-label="ออเดอร์">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
         </button>
+      </div>
+      <div class="header-meta">
+        <span class="status-pill">เปิดบริการ</span>
+        <span class="header-sub" id="sales-order-number">ออเดอร์ A001</span>
       </div>
       <div class="search-field mt-8">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -336,6 +343,11 @@
           <div class="form-error">กรุณากรอกราคาให้ถูกต้อง</div>
         </div>
         <div class="form-group">
+          <label class="form-label">รูป Thumbnail เมนู</label>
+          <input type="file" accept="image/*" class="form-file" id="menu-form-image">
+          <div class="menu-image-preview" id="menu-form-image-preview"></div>
+        </div>
+        <div class="form-group">
           <label class="form-label">รายการเสริมที่ใช้ได้</label>
           <div class="chip-select" id="menu-form-addons"></div>
         </div>
@@ -626,12 +638,12 @@
     ];
     var allAddonIds = addons.map(function (a) { return a.id; });
     var menuItems = [
-      { id: 'menu-kaprao-pork', name: 'กะเพราหมู', categoryId: 'cat-kaprao', price: 50, addonIds: allAddonIds, active: true },
-      { id: 'menu-kaprao-chicken', name: 'กะเพราไก่', categoryId: 'cat-kaprao', price: 50, addonIds: allAddonIds, active: true },
-      { id: 'menu-kaprao-shrimp', name: 'กะเพรากุ้ง', categoryId: 'cat-kaprao', price: 60, addonIds: allAddonIds, active: true },
-      { id: 'menu-garlic-pork', name: 'หมูกระเทียม', categoryId: 'cat-fried-garlic', price: 50, addonIds: allAddonIds, active: true },
-      { id: 'menu-fried-rice-pork', name: 'ข้าวผัดหมู', categoryId: 'cat-fried-rice', price: 50, addonIds: allAddonIds, active: true },
-      { id: 'menu-fried-rice-shrimp', name: 'ข้าวผัดกุ้ง', categoryId: 'cat-fried-rice', price: 60, addonIds: allAddonIds, active: true }
+      { id: 'menu-kaprao-pork', name: 'กะเพราหมู', categoryId: 'cat-kaprao', price: 50, addonIds: allAddonIds, active: true, thumbnail: 'Menu-img/default-kaprao.svg' },
+      { id: 'menu-kaprao-chicken', name: 'กะเพราไก่', categoryId: 'cat-kaprao', price: 50, addonIds: allAddonIds, active: true, thumbnail: 'Menu-img/default-kaprao.svg' },
+      { id: 'menu-kaprao-shrimp', name: 'กะเพรากุ้ง', categoryId: 'cat-kaprao', price: 60, addonIds: allAddonIds, active: true, thumbnail: 'Menu-img/default-kaprao.svg' },
+      { id: 'menu-garlic-pork', name: 'หมูกระเทียม', categoryId: 'cat-fried-garlic', price: 50, addonIds: allAddonIds, active: true, thumbnail: 'Menu-img/default-fried.svg' },
+      { id: 'menu-fried-rice-pork', name: 'ข้าวผัดหมู', categoryId: 'cat-fried-rice', price: 50, addonIds: allAddonIds, active: true, thumbnail: 'Menu-img/default-rice.svg' },
+      { id: 'menu-fried-rice-shrimp', name: 'ข้าวผัดกุ้ง', categoryId: 'cat-fried-rice', price: 60, addonIds: allAddonIds, active: true, thumbnail: 'Menu-img/default-rice.svg' }
     ];
     var ingredients = [
       { id: 'ing-pork', name: 'เนื้อหมู', qty: 5, unit: 'กิโลกรัม', pricePerUnit: 140, minStock: 1 },
@@ -771,6 +783,14 @@
      3. UTILITIES
      ======================================================================= */
   function uid() { return 'id-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 9); }
+
+  function resolveMenuThumbnail(menuItem) {
+    if (!menuItem) return 'Menu-img/default-fried.svg';
+    if (menuItem.thumbnail && (menuItem.thumbnail.indexOf('data:') === 0 || menuItem.thumbnail.indexOf('Menu-img/') === 0 || menuItem.thumbnail.indexOf('/') === 0 || menuItem.thumbnail.indexOf('http') === 0)) {
+      return menuItem.thumbnail;
+    }
+    return 'Menu-img/default-fried.svg';
+  }
 
   function money(n) {
     n = Number(n) || 0;
@@ -919,9 +939,13 @@
       emptyEl.classList.add('hidden');
       grid.innerHTML = items.map(function (m) {
         var disabled = !m.active;
+        var thumb = resolveMenuThumbnail(m);
         return '' +
           '<div class="menu-card' + (disabled ? ' unavailable' : '') + '">' +
-            '<div class="menu-card-thumb"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg></div>' +
+            '<div class="menu-card-thumb">' +
+              '<img src="' + escapeHtml(thumb) + '" alt="' + escapeHtml(m.name) + '" class="menu-card-thumb-image">' +
+              '<span class="menu-card-thumb-fallback"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg></span>' +
+            '</div>' +
             '<div class="menu-card-body">' +
               '<div class="menu-card-name">' + escapeHtml(m.name) + (disabled ? ' <span class="badge badge-gray">งดขาย</span>' : '') + '</div>' +
               '<div class="menu-card-bottom">' +
@@ -1530,6 +1554,10 @@
     document.getElementById('menu-form-name').value = m ? m.name : '';
     document.getElementById('menu-form-price').value = m ? m.price : '';
     document.getElementById('menu-form-active').checked = m ? m.active : true;
+    document.getElementById('menu-form-image').value = '';
+    document.getElementById('menu-form-image-preview').innerHTML = m && m.thumbnail
+      ? '<img src="' + escapeHtml(resolveMenuThumbnail(m)) + '" alt="thumbnail preview" class="menu-image-preview-image">'
+      : '<div class="menu-image-placeholder">เพิ่มรูปภาพ</div>';
 
     var catSel = document.getElementById('menu-form-category');
     catSel.innerHTML = state.categories.map(function (c) { return '<option value="' + c.id + '">' + escapeHtml(c.name) + '</option>'; }).join('');
@@ -1545,6 +1573,23 @@
     clearFormError('menu-form-price');
     openOverlay('overlay-menu-form');
   }
+
+  document.getElementById('menu-form-image').addEventListener('change', function (e) {
+    var file = e.target.files && e.target.files[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      showToast('ไฟล์รูปภาพต้องไม่เกิน 2MB', 'error');
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function (event) {
+      var result = event.target.result;
+      var previewEl = document.getElementById('menu-form-image-preview');
+      previewEl.innerHTML = '<img src="' + result + '" alt="thumbnail preview" class="menu-image-preview-image">';
+      document.getElementById('menu-form-image').setAttribute('data-image', result);
+    };
+    reader.readAsDataURL(file);
+  });
 
   document.getElementById('menu-form-addons').addEventListener('click', function (e) {
     var btn = e.target.closest('.chip-option');
@@ -1564,22 +1609,26 @@
     var categoryId = document.getElementById('menu-form-category').value;
     var active = document.getElementById('menu-form-active').checked;
     var addonIds = Array.from(document.querySelectorAll('#menu-form-addons .chip-option.selected')).map(function (b) { return b.getAttribute('data-id'); });
+    var uploadedImage = document.getElementById('menu-form-image').getAttribute('data-image');
 
     var valid = true;
     if (!name) { setFormError('menu-form-name', true); valid = false; } else { clearFormError('menu-form-name'); }
     if (!price || price <= 0) { setFormError('menu-form-price', true); valid = false; } else { clearFormError('menu-form-price'); }
     if (!valid) { showToast('กรุณากรอกข้อมูลให้ครบถ้วน', 'error'); return; }
 
+    var thumbnail = uploadedImage || (editingMenuId ? (state.menuItems.find(function (x) { return x.id === editingMenuId; }) || {}).thumbnail : null) || 'Menu-img/default-fried.svg';
+
     if (editingMenuId) {
       var m = state.menuItems.find(function (x) { return x.id === editingMenuId; });
-      m.name = name; m.price = price; m.categoryId = categoryId; m.active = active; m.addonIds = addonIds;
+      m.name = name; m.price = price; m.categoryId = categoryId; m.active = active; m.addonIds = addonIds; m.thumbnail = thumbnail;
     } else {
-      state.menuItems.push({ id: uid(), name: name, price: price, categoryId: categoryId, active: active, addonIds: addonIds });
+      state.menuItems.push({ id: uid(), name: name, price: price, categoryId: categoryId, active: active, addonIds: addonIds, thumbnail: thumbnail });
     }
     save();
     closeOverlay('overlay-menu-form');
     showToast('บันทึกข้อมูลเรียบร้อย', 'success');
     renderProducts();
+    renderSales();
   });
 
   document.getElementById('products-items-list').addEventListener('click', function (e) {

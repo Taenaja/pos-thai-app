@@ -6,37 +6,42 @@
 
 :root {
   /* ---- Color: Primitive ---- */
-  --green-50:  #eefbf3;
-  --green-100: #d6f5e2;
-  --green-200: #a8e8c2;
+  --green-50:  #f4fff7;
+  --green-100: #d6f5df;
+  --green-200: #afe9c0;
   --green-500: #1fa055;
-  --green-600: #178a49;
-  --green-700: #10703b;
+  --green-600: #19864b;
+  --green-700: #116f3a;
 
-  --orange-50:  #fff4e8;
-  --orange-100: #ffe3c2;
-  --orange-500: #f2860f;
-  --orange-600: #d9720a;
+  --orange-50:  #fff8ef;
+  --orange-100: #ffe5bc;
+  --orange-300: #ffc56a;
+  --orange-500: #f59e0b;
+  --orange-600: #dd7c00;
+  --orange-700: #b95d00;
 
-  --red-50:  #fdecec;
-  --red-100: #fad1d1;
-  --red-500: #e0392c;
-  --red-600: #c22e22;
+  --red-50:  #fff1f1;
+  --red-100: #ffd4d4;
+  --red-500: #e05353;
+  --red-600: #c33a3a;
+
+  --cream-50:  #fffdf7;
+  --cream-100: #fff3de;
 
   --gray-0:   #ffffff;
-  --gray-50:  #f7f8f7;
-  --gray-100: #eef0ef;
-  --gray-200: #e0e3e1;
-  --gray-300: #c9cdca;
-  --gray-400: #a3a9a5;
-  --gray-500: #767d78;
-  --gray-600: #565c57;
-  --gray-700: #3c413d;
-  --gray-800: #262a26;
-  --gray-900: #171917;
+  --gray-50:  #faf9f5;
+  --gray-100: #f3efe7;
+  --gray-200: #e8e1d5;
+  --gray-300: #d0c5b4;
+  --gray-400: #9a8f7d;
+  --gray-500: #665d52;
+  --gray-600: #4d473f;
+  --gray-700: #302d2a;
+  --gray-800: #201d1a;
+  --gray-900: #171512;
 
   /* ---- Color: Semantic ---- */
-  --color-bg: var(--gray-50);
+  --color-bg: var(--cream-50);
   --color-surface: var(--gray-0);
   --color-border: var(--gray-200);
   --color-text-primary: var(--gray-900);
@@ -44,10 +49,14 @@
   --color-text-muted: var(--gray-400);
   --color-text-inverse: var(--gray-0);
 
-  --color-primary: var(--green-500);
-  --color-primary-dark: var(--green-700);
-  --color-primary-bg: var(--green-50);
-  --color-primary-border: var(--green-200);
+  --color-primary: var(--orange-500);
+  --color-primary-dark: var(--orange-700);
+  --color-primary-bg: var(--orange-50);
+  --color-primary-border: var(--orange-100);
+
+  --color-secondary: var(--green-500);
+  --color-secondary-dark: var(--green-700);
+  --color-secondary-bg: var(--green-50);
 
   --color-warning: var(--orange-500);
   --color-warning-bg: var(--orange-50);
@@ -151,14 +160,42 @@ img { max-width: 100%; }
   position: sticky;
   top: 0;
   z-index: 20;
-  background: var(--color-surface);
+  background: linear-gradient(135deg, #fffaf1 0%, #fff3d9 100%);
   padding: calc(var(--space-12) + var(--safe-top)) var(--space-16) var(--space-12);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid rgba(204, 150, 67, 0.16);
+  box-shadow: 0 8px 20px rgba(177, 118, 33, 0.08);
+}
+.brand-header {
+  background: linear-gradient(180deg, #fff8eb 0%, #fff5db 100%);
+}
+.brand-row {
+  align-items: center;
+}
+.brand-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.brand-logo {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.35);
+  padding: 4px;
+}
+.brand-kicker {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-primary-dark);
+  font-weight: 700;
 }
 .app-header .header-title {
-  font-size: var(--fs-h2);
-  font-weight: 700;
+  font-size: clamp(1.1rem, 2vw, 1.45rem);
+  font-weight: 800;
   margin: 0;
+  color: var(--gray-800);
 }
 .app-header .header-sub {
   font-size: var(--fs-small);
@@ -170,6 +207,31 @@ img { max-width: 100%; }
   align-items: center;
   justify-content: space-between;
   gap: var(--space-8);
+}
+.header-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(31, 160, 85, 0.12);
+  color: var(--color-secondary-dark);
+  font-size: 11px;
+  font-weight: 700;
+}
+.status-pill::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  background: var(--color-secondary);
+  border-radius: 50%;
+  display: inline-block;
 }
 
 /* =========================================================
@@ -200,11 +262,14 @@ img { max-width: 100%; }
   border: none;
   color: var(--color-text-muted);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   padding: 6px 0;
 }
 .nav-item svg { width: 22px; height: 22px; }
-.nav-item.active { color: var(--color-primary); }
+.nav-item.active {
+  color: var(--color-primary-dark);
+  background: linear-gradient(180deg, rgba(245,158,11,0.12), rgba(255,255,255,0));
+}
 
 /* =========================================================
    Buttons
@@ -298,6 +363,38 @@ img { max-width: 100%; }
 }
 .search-field svg { flex-shrink: 0; color: var(--color-text-muted); }
 
+.menu-image-preview {
+  margin-top: 8px;
+  width: 100%;
+  min-height: 110px;
+  border: 1.5px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, rgba(245,158,11,0.08), rgba(31,160,85,0.08));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.menu-image-placeholder {
+  color: var(--color-text-muted);
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+.menu-image-preview-image {
+  width: 100%;
+  height: 110px;
+  object-fit: cover;
+  display: block;
+}
+.form-file {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+  padding: 10px 12px;
+  color: var(--color-text-secondary);
+}
+
 /* =========================================================
    Tabs (category / status)
    ========================================================= */
@@ -316,14 +413,15 @@ img { max-width: 100%; }
   background: var(--gray-100);
   border: 1px solid transparent;
   font-size: var(--fs-body);
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-text-secondary);
   white-space: nowrap;
 }
 .tab-chip.active {
-  background: var(--color-primary-bg);
-  color: var(--color-primary-dark);
-  border-color: var(--color-primary-border);
+  background: linear-gradient(135deg, var(--orange-500), var(--orange-600));
+  color: #fff;
+  border-color: rgba(255,255,255,0.4);
+  box-shadow: 0 8px 18px rgba(221,124,0,0.22);
 }
 
 .tabs-underline {
@@ -375,23 +473,46 @@ img { max-width: 100%; }
   padding: 0 16px;
 }
 .menu-card {
-  background: var(--color-surface);
+  background: linear-gradient(180deg, #fff 0%, #fffdfa 100%);
   border-radius: var(--radius-lg);
-  border: 1px solid var(--color-border);
+  border: 1px solid rgba(217, 180, 120, 0.2);
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 8px 20px rgba(93, 65, 29, 0.06);
 }
 .menu-card-thumb {
-  height: 84px;
-  background: linear-gradient(135deg, var(--green-100), var(--green-50));
+  height: 92px;
+  background: linear-gradient(135deg, rgba(245,158,11,0.18), rgba(31,160,85,0.16));
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--green-600);
+  font-size: 30px;
+  position: relative;
+  overflow: hidden;
+}
+.menu-card-thumb-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.menu-card-thumb-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+}
+.menu-card-thumb img[src=""] + .menu-card-thumb-fallback,
+.menu-card-thumb img:not([src]) + .menu-card-thumb-fallback {
+  opacity: 1;
 }
 .menu-card-body { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
-.menu-card-name { font-weight: 700; font-size: var(--fs-body); line-height: 1.3; }
+.menu-card-name { font-weight: 800; font-size: var(--fs-body); line-height: 1.35; color: var(--gray-800); }
 .menu-card-bottom {
   display: flex;
   align-items: center;
@@ -403,16 +524,17 @@ img { max-width: 100%; }
 .btn-add-round {
   width: 32px; height: 32px;
   border-radius: var(--radius-full);
-  background: var(--color-primary);
+  background: linear-gradient(135deg, var(--orange-500), var(--orange-600));
   color: #fff;
   border: none;
   font-size: 18px;
   font-weight: 700;
   line-height: 1;
   display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 16px rgba(221,124,0,0.18);
 }
 .menu-card.unavailable { opacity: 0.5; }
-.menu-card.unavailable .btn-add-round { background: var(--gray-300); }
+.menu-card.unavailable .btn-add-round { background: var(--gray-300); box-shadow: none; }
 
 /* =========================================================
    Sticky cart bar / CTA
