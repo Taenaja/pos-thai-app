@@ -1,0 +1,8 @@
+name = "pos-thai-app"
+compatibility_date = "2026-08-23"
+pages_build_output_dir = "."
+
+[[d1_databases]]
+binding = "DB"
+database_name = "pos-thai-db"
+database_id = "a22bc7fb-b88d-4f47-8ffd-ac781434f8f2"
