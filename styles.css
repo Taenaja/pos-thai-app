@@ -264,8 +264,36 @@ img { max-width: 100%; }
   font-size: 11px;
   font-weight: 700;
   padding: 6px 0;
+  position: relative;
+}
+.nav-item-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 .nav-item svg { width: 22px; height: 22px; }
+.nav-badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--color-danger);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-surface);
+  box-shadow: 0 4px 10px rgba(224, 83, 83, 0.25);
+}
+.nav-badge.hidden {
+  display: none;
+}
 .nav-item.active {
   color: var(--color-primary-dark);
   background: linear-gradient(180deg, rgba(245,158,11,0.12), rgba(255,255,255,0));
