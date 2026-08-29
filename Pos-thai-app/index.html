@@ -869,7 +869,30 @@
   document.querySelectorAll('.nav-item').forEach(function (btn) {
     btn.addEventListener('click', function () { goToScreen(btn.getAttribute('data-screen')); });
   });
-  document.getElementById('btn-goto-orders-badge').addEventListener('click', function () { goToScreen('orders'); });
+
+  function toggleOrdersDropdown(forceOpen) {
+    var dropdown = document.getElementById('orders-dropdown');
+    if (!dropdown) return;
+    var open = typeof forceOpen === 'boolean' ? forceOpen : dropdown.classList.contains('hidden');
+    dropdown.classList.toggle('hidden', !open);
+  }
+
+  document.getElementById('btn-goto-orders-badge').addEventListener('click', function (e) {
+    e.stopPropagation();
+    toggleOrdersDropdown();
+  });
+
+  document.querySelectorAll('.dropdown-item').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      goToScreen(btn.getAttribute('data-screen'));
+      toggleOrdersDropdown(false);
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    var wrapper = e.target.closest('.header-dropdown-wrap');
+    if (!wrapper) toggleOrdersDropdown(false);
+  });
 
   /* =======================================================================
      7. SALES SCREEN
@@ -909,7 +932,7 @@
       grid.innerHTML = items.map(function (m) {
         var disabled = !m.active;
         return '' +
-          '<div class="menu-card' + (disabled ? ' unavailable' : '') + '">' +
+          '<div class="menu-card' + (disabled ? ' unavailable' : '') + '" data-action="open-customize" data-id="' + m.id + '">' +
             '<div class="menu-card-thumb"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg></div>' +
             '<div class="menu-card-body">' +
               '<div class="menu-card-name">' + escapeHtml(m.name) + (disabled ? ' <span class="badge badge-gray">งดขาย</span>' : '') + '</div>' +
@@ -2165,9 +2188,13 @@
      14. GLOBAL: open customize sheet from sales grid
      ======================================================================= */
   document.getElementById('sales-menu-grid').addEventListener('click', function (e) {
-    var btn = e.target.closest('[data-action="open-customize"]');
-    if (!btn || btn.disabled) return;
-    openCustomizeSheet(btn.getAttribute('data-id'), null);
+    var card = e.target.closest('.menu-card');
+    if (!card || card.classList.contains('unavailable')) return;
+    var trigger = e.target.closest('[data-action="open-customize"]');
+    if (trigger && trigger.disabled) return;
+    var menuId = (trigger || card).getAttribute('data-id');
+    if (!menuId) return;
+    openCustomizeSheet(menuId, null);
   });
   document.getElementById('sales-category-tabs').addEventListener('click', function (e) {
     var btn = e.target.closest('[data-action="sales-filter-cat"]');

@@ -17,23 +17,25 @@
     <header class="app-header brand-header">
       <div class="header-row brand-row">
         <div class="brand-block">
-          <img src="source/LOGO.png" alt="ร้านอาหารตามสั่ง" class="brand-logo">
           <div>
-            <div class="brand-kicker">ร้านอาหารตามสั่ง</div>
-            <h1 class="header-title">เลี้ยวผัด อัดลาน</h1>
+            <h1 class="header-title">เจียวผัด จัดจ้าน</h1>
           </div>
         </div>
-        <button class="btn-icon" id="btn-goto-orders-badge" aria-label="ออเดอร์">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-        </button>
+        <div class="header-actions">
+          <span class="status-pill">เปิดบริการ</span>
+          <div class="header-dropdown-wrap">
+            <button class="btn-icon" id="btn-goto-orders-badge" aria-label="ออเดอร์">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 17H3C2.45 17 2 17.45 2 18C2 18.55 2.45 19 3 19H21C21.55 19 22 18.55 22 18C22 17.45 21.55 17 21 17Z" fill="currentColor"/><path d="M21 11H3C2.45 11 2 11.45 2 12C2 12.55 2.45 13 3 13H21C21.55 13 22 12.55 22 12C22 11.45 21.55 11 21 11Z" fill="currentColor"/><path d="M3 7H21C21.55 7 22 6.55 22 6C22 5.45 21.55 5 21 5H3C2.45 5 2 5.45 2 6C2 6.55 2.45 7 3 7Z" fill="currentColor"/></svg>
+            </button>
+            <div class="header-dropdown hidden" id="orders-dropdown">
+              <button class="dropdown-item" data-screen="products">สินค้า</button>
+              <button class="dropdown-item" data-screen="stock">สต็อก</button>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="header-meta">
-        <span class="status-pill">เปิดบริการ</span>
         <span class="header-sub" id="sales-order-number">ออเดอร์ A001</span>
-      </div>
-      <div class="search-field mt-8">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="sales-search" placeholder="ค้นหารายการอาหาร">
       </div>
     </header>
 
@@ -44,8 +46,11 @@
 
     <div class="sticky-bar hidden" id="sales-cart-bar">
       <button class="cart-bar-btn" id="btn-view-cart">
-        <span id="cart-bar-text">ดูตะกร้า</span>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        <span class="cart-bar-left">
+          <span class="cart-bar-count" id="cart-bar-count">0</span>
+          <span id="cart-bar-text">ดูตะกร้า</span>
+        </span>
+        <span class="cart-bar-price" id="cart-bar-price"></span>
       </button>
     </div>
   </section>
@@ -83,8 +88,17 @@
   ========================================================== -->
   <section class="screen" id="screen-orders">
     <header class="app-header">
-      <h1 class="header-title">ออเดอร์</h1>
-      <div class="header-sub">จัดการออเดอร์และครัว</div>
+      <div class="header-row">
+        <div>
+          <h1 class="header-title">ออเดอร์</h1>
+          <div class="header-sub">จัดการออเดอร์และครัว</div>
+        </div>
+        <div class="header-actions">
+          <button class="btn-icon btn-close-screen" data-screen="sales" aria-label="ปิด">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
     </header>
     <div class="tabs-underline" id="orders-tabs"></div>
     <div id="orders-list" class="mt-16"></div>
@@ -96,19 +110,22 @@
   ========================================================== -->
   <section class="screen" id="screen-products">
     <header class="app-header">
-      <h1 class="header-title">สินค้า</h1>
-      <div class="header-sub">จัดการเมนู หมวดหมู่ และรายการเสริม</div>
+      <div class="header-row">
+        <div>
+          <h1 class="header-title">สินค้า</h1>
+          <div class="header-sub">จัดการเมนู หมวดหมู่ และรายการเสริม</div>
+        </div>
+        <div class="header-actions">
+          <button class="btn-icon btn-close-screen" data-screen="sales" aria-label="ปิด">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
     </header>
     <div class="tabs-underline" id="products-tabs"></div>
 
     <!-- Sub-tab: รายการอาหาร -->
     <div id="products-pane-items" class="products-pane">
-      <div class="section" style="padding-bottom:0">
-        <div class="search-field">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="products-search" placeholder="ค้นหาเมนู">
-        </div>
-      </div>
       <div class="tabs-scroll" id="products-filter-tabs"></div>
       <div class="section" id="products-items-list"></div>
       <div class="empty-state hidden" id="products-items-empty"></div>
@@ -137,8 +154,17 @@
   ========================================================== -->
   <section class="screen" id="screen-stock">
     <header class="app-header">
-      <h1 class="header-title">สต็อก</h1>
-      <div class="header-sub">จัดการวัตถุดิบและสต็อก</div>
+      <div class="header-row">
+        <div>
+          <h1 class="header-title">สต็อก</h1>
+          <div class="header-sub">จัดการวัตถุดิบและสต็อก</div>
+        </div>
+        <div class="header-actions">
+          <button class="btn-icon btn-close-screen" data-screen="sales" aria-label="ปิด">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
     </header>
 
     <div class="section" style="padding-bottom:0">
@@ -162,8 +188,17 @@
   ========================================================== -->
   <section class="screen" id="screen-reports">
     <header class="app-header">
-      <h1 class="header-title">รายงาน</h1>
-      <div class="header-sub">สรุปรายได้และรายจ่าย</div>
+      <div class="header-row">
+        <div>
+          <h1 class="header-title">รายงาน</h1>
+          <div class="header-sub">สรุปรายได้และรายจ่าย</div>
+        </div>
+        <div class="header-actions">
+          <button class="btn-icon btn-close-screen" data-screen="sales" aria-label="ปิด">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
     </header>
 
     <div class="tabs-scroll" id="reports-date-tabs"></div>
@@ -228,14 +263,6 @@
         <span class="nav-badge hidden" id="nav-orders-badge">0</span>
       </span>
       <span>ออเดอร์</span>
-    </button>
-    <button class="nav-item" data-screen="products">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v4H3z"/><path d="M5 7v13a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
-      <span>สินค้า</span>
-    </button>
-    <button class="nav-item" data-screen="stock">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5 9 5 9-5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/></svg>
-      <span>สต็อก</span>
     </button>
     <button class="nav-item" data-screen="reports">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
@@ -361,7 +388,8 @@
           </div>
         </div>
       </div>
-      <div class="sheet-footer">
+      <div class="sheet-footer menu-form-actions">
+        <button class="btn btn-danger-outline btn-block btn-lg hidden" id="btn-delete-menu" type="button">ลบเมนู</button>
         <button class="btn btn-primary btn-block btn-lg" id="btn-save-menu">บันทึกเมนู</button>
       </div>
     </div>
@@ -376,9 +404,12 @@
         <input type="text" class="form-input" id="category-form-name" placeholder="เช่น กะเพรา">
         <div class="form-error">กรุณากรอกชื่อหมวดหมู่</div>
       </div>
-      <div class="modal-actions">
-        <button class="btn btn-secondary" data-close="overlay-category-form">ยกเลิก</button>
-        <button class="btn btn-primary" id="btn-save-category">บันทึก</button>
+      <div class="modal-actions modal-actions-stack">
+        <button class="btn btn-danger-outline hidden" id="btn-delete-category" type="button">ลบหมวดหมู่</button>
+        <div class="modal-actions-row">
+          <button class="btn btn-secondary" data-close="overlay-category-form">ยกเลิก</button>
+          <button class="btn btn-primary" id="btn-save-category">บันทึก</button>
+        </div>
       </div>
     </div>
   </div>
@@ -396,9 +427,18 @@
         <label class="form-label">ราคา (บาท)</label>
         <input type="number" inputmode="decimal" class="form-input" id="addon-form-price" placeholder="0">
       </div>
-      <div class="modal-actions">
-        <button class="btn btn-secondary" data-close="overlay-addon-form">ยกเลิก</button>
-        <button class="btn btn-primary" id="btn-save-addon">บันทึก</button>
+      <div class="form-group">
+        <div class="flex-between">
+          <label class="form-label" style="margin:0">สถานะเปิดใช้งาน</label>
+          <label class="switch"><input type="checkbox" id="addon-form-active" checked><span class="switch-track"></span></label>
+        </div>
+      </div>
+      <div class="modal-actions modal-actions-stack">
+        <button class="btn btn-danger-outline hidden" id="btn-delete-addon" type="button">ลบรายการเสริม</button>
+        <div class="modal-actions-row">
+          <button class="btn btn-secondary" data-close="overlay-addon-form">ยกเลิก</button>
+          <button class="btn btn-primary" id="btn-save-addon">บันทึก</button>
+        </div>
       </div>
     </div>
   </div>
@@ -412,9 +452,18 @@
         <input type="text" class="form-input" id="comment-form-text" placeholder="เช่น ไม่ใส่พริก">
         <div class="form-error">กรุณากรอกข้อความ</div>
       </div>
-      <div class="modal-actions">
-        <button class="btn btn-secondary" data-close="overlay-comment-form">ยกเลิก</button>
-        <button class="btn btn-primary" id="btn-save-comment">บันทึก</button>
+      <div class="form-group">
+        <div class="flex-between">
+          <label class="form-label" style="margin:0">สถานะเปิดใช้งาน</label>
+          <label class="switch"><input type="checkbox" id="comment-form-active" checked><span class="switch-track"></span></label>
+        </div>
+      </div>
+      <div class="modal-actions modal-actions-stack">
+        <button class="btn btn-danger-outline hidden" id="btn-delete-comment" type="button">ลบหมายเหตุ</button>
+        <div class="modal-actions-row">
+          <button class="btn btn-secondary" data-close="overlay-comment-form">ยกเลิก</button>
+          <button class="btn btn-primary" id="btn-save-comment">บันทึก</button>
+        </div>
       </div>
     </div>
   </div>
@@ -609,6 +658,14 @@
       var payload = await response.json();
       if (!payload || !payload.data || typeof payload.data !== 'object') return false;
 
+      // If this device already has local state, only accept the cloud copy
+      // when it is actually newer. Otherwise a stale/failed cloud sync
+      // (e.g. a large menu photo that never made it to D1) would silently
+      // wipe out newer local edits every time the app reloads.
+      var cloudUpdatedAt = payload.data.updatedAt || 0;
+      var localUpdatedAt = (hadLocalState && state.updatedAt) || 0;
+      if (hadLocalState && cloudUpdatedAt <= localUpdatedAt) return false;
+
       state = payload.data;
       return true;
     } catch (e) {
@@ -641,12 +698,12 @@
     ];
     var allAddonIds = addons.map(function (a) { return a.id; });
     var menuItems = [
-      { id: 'menu-kaprao-pork', name: 'กะเพราหมู', categoryId: 'cat-kaprao', price: 50, addonIds: allAddonIds, active: true, thumbnail: 'Menu-img/default-kaprao.svg' },
-      { id: 'menu-kaprao-chicken', name: 'กะเพราไก่', categoryId: 'cat-kaprao', price: 50, addonIds: allAddonIds, active: true, thumbnail: 'Menu-img/default-kaprao.svg' },
-      { id: 'menu-kaprao-shrimp', name: 'กะเพรากุ้ง', categoryId: 'cat-kaprao', price: 60, addonIds: allAddonIds, active: true, thumbnail: 'Menu-img/default-kaprao.svg' },
-      { id: 'menu-garlic-pork', name: 'หมูกระเทียม', categoryId: 'cat-fried-garlic', price: 50, addonIds: allAddonIds, active: true, thumbnail: 'Menu-img/default-fried.svg' },
-      { id: 'menu-fried-rice-pork', name: 'ข้าวผัดหมู', categoryId: 'cat-fried-rice', price: 50, addonIds: allAddonIds, active: true, thumbnail: 'Menu-img/default-rice.svg' },
-      { id: 'menu-fried-rice-shrimp', name: 'ข้าวผัดกุ้ง', categoryId: 'cat-fried-rice', price: 60, addonIds: allAddonIds, active: true, thumbnail: 'Menu-img/default-rice.svg' }
+      { id: 'menu-kaprao-pork', name: 'กะเพราหมู', categoryId: 'cat-kaprao', price: 50, addonIds: allAddonIds, active: true, thumbnail: 'empty-state-thumbnail' },
+      { id: 'menu-kaprao-chicken', name: 'กะเพราไก่', categoryId: 'cat-kaprao', price: 50, addonIds: allAddonIds, active: true, thumbnail: 'empty-state-thumbnail' },
+      { id: 'menu-kaprao-shrimp', name: 'กะเพรากุ้ง', categoryId: 'cat-kaprao', price: 60, addonIds: allAddonIds, active: true, thumbnail: 'empty-state-thumbnail' },
+      { id: 'menu-garlic-pork', name: 'หมูกระเทียม', categoryId: 'cat-fried-garlic', price: 50, addonIds: allAddonIds, active: true, thumbnail: 'empty-state-thumbnail' },
+      { id: 'menu-fried-rice-pork', name: 'ข้าวผัดหมู', categoryId: 'cat-fried-rice', price: 50, addonIds: allAddonIds, active: true, thumbnail: 'empty-state-thumbnail' },
+      { id: 'menu-fried-rice-shrimp', name: 'ข้าวผัดกุ้ง', categoryId: 'cat-fried-rice', price: 60, addonIds: allAddonIds, active: true, thumbnail: 'empty-state-thumbnail' }
     ];
     var ingredients = [
       { id: 'ing-pork', name: 'เนื้อหมู', qty: 5, unit: 'กิโลกรัม', pricePerUnit: 140, minStock: 1 },
@@ -746,6 +803,7 @@
   /* =======================================================================
      2. STATE / STORAGE
      ======================================================================= */
+  var hadLocalState = false;
   var state = loadState();
 
   async function bootstrapState() {
@@ -756,6 +814,10 @@
       } catch (e) {
         // Ignore local persistence issues during initial hydration.
       }
+    } else if (hadLocalState) {
+      // Cloud copy was stale/missing compared to this device — push local
+      // state back up so the cloud eventually catches up (best-effort).
+      syncStateToCloudflare(state);
     }
     return true;
   }
@@ -763,7 +825,7 @@
   function loadState() {
     try {
       var raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) return JSON.parse(raw);
+      if (raw) { hadLocalState = true; return JSON.parse(raw); }
     } catch (e) { /* fall through to seed */ }
     var seeded = seedState();
     persist(seeded);
@@ -771,13 +833,15 @@
   }
 
   function persist(s) {
+    var toSave = s || state;
+    toSave.updatedAt = Date.now();
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(s || state));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
     } catch (e) {
       showToast('ไม่สามารถบันทึกข้อมูลได้ กรุณาลองใหม่', 'error');
     }
 
-    syncStateToCloudflare(s || state);
+    syncStateToCloudflare(toSave);
   }
 
   function save() { persist(state); }
@@ -787,12 +851,21 @@
      ======================================================================= */
   function uid() { return 'id-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 9); }
 
+  var DEFAULT_MENU_THUMBNAIL = 'empty-state-thumbnail';
+
   function resolveMenuThumbnail(menuItem) {
-    if (!menuItem) return 'Menu-img/default-fried.svg';
-    if (menuItem.thumbnail && (menuItem.thumbnail.indexOf('data:') === 0 || menuItem.thumbnail.indexOf('Menu-img/') === 0 || menuItem.thumbnail.indexOf('/') === 0 || menuItem.thumbnail.indexOf('http') === 0)) {
+    if (!menuItem) return DEFAULT_MENU_THUMBNAIL;
+    if (menuItem.thumbnail && (menuItem.thumbnail === DEFAULT_MENU_THUMBNAIL || menuItem.thumbnail.indexOf('data:') === 0 || menuItem.thumbnail.indexOf('Menu-img/') === 0 || menuItem.thumbnail.indexOf('/') === 0 || menuItem.thumbnail.indexOf('http') === 0)) {
       return menuItem.thumbnail;
     }
-    return 'Menu-img/default-fried.svg';
+    return DEFAULT_MENU_THUMBNAIL;
+  }
+
+  function renderMenuThumbnailMarkup(thumb, altText) {
+    if (thumb === DEFAULT_MENU_THUMBNAIL) {
+      return '<img src="Menu-img/empty-state-thumbnail.png" alt="' + escapeHtml(altText) + '" class="menu-card-thumb-image">';
+    }
+    return '<img src="' + escapeHtml(thumb) + '" alt="' + escapeHtml(altText) + '" class="menu-card-thumb-image">';
   }
 
   function money(n) {
@@ -925,7 +998,36 @@
   document.querySelectorAll('.nav-item').forEach(function (btn) {
     btn.addEventListener('click', function () { goToScreen(btn.getAttribute('data-screen')); });
   });
-  document.getElementById('btn-goto-orders-badge').addEventListener('click', function () { goToScreen('orders'); });
+
+  function toggleOrdersDropdown(forceOpen) {
+    var dropdown = document.getElementById('orders-dropdown');
+    if (!dropdown) return;
+    var open = typeof forceOpen === 'boolean' ? forceOpen : dropdown.classList.contains('hidden');
+    dropdown.classList.toggle('hidden', !open);
+  }
+
+  document.getElementById('btn-goto-orders-badge').addEventListener('click', function (e) {
+    e.stopPropagation();
+    toggleOrdersDropdown();
+  });
+
+  document.querySelectorAll('.btn-close-screen').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      goToScreen(btn.getAttribute('data-screen') || 'sales');
+    });
+  });
+
+  document.querySelectorAll('.dropdown-item').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      goToScreen(btn.getAttribute('data-screen'));
+      toggleOrdersDropdown(false);
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    var wrapper = e.target.closest('.header-dropdown-wrap');
+    if (!wrapper) toggleOrdersDropdown(false);
+  });
 
   /* =======================================================================
      7. SALES SCREEN
@@ -969,9 +1071,9 @@
         var category = state.categories.find(function (c) { return c.id === m.categoryId; });
         var selected = salesSelectedMenuId === m.id;
         return '' +
-          '<div class="menu-card' + (disabled ? ' unavailable' : '') + (selected ? ' selected' : '') + '">' +
+          '<div class="menu-card' + (disabled ? ' unavailable' : '') + (selected ? ' selected' : '') + '" data-action="open-customize" data-id="' + m.id + '">' +
             '<div class="menu-card-thumb">' +
-              '<img src="' + escapeHtml(thumb) + '" alt="' + escapeHtml(m.name) + '" class="menu-card-thumb-image">' +
+              renderMenuThumbnailMarkup(thumb, m.name) +
               '<span class="menu-card-thumb-fallback"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/></svg></span>' +
             '</div>' +
             '<div class="menu-card-body">' +
@@ -989,16 +1091,14 @@
     var cartBar = document.getElementById('sales-cart-bar');
     if (cartCount() > 0) {
       cartBar.classList.remove('hidden');
-      document.getElementById('cart-bar-text').textContent = 'ดูตะกร้า · ' + cartCount() + ' รายการ · ' + money(cartTotal()) + ' บาท';
+      document.getElementById('cart-bar-count').textContent = cartCount();
+      document.getElementById('cart-bar-text').textContent = 'ดูรายการที่สั่ง';
+      document.getElementById('cart-bar-price').textContent = money(cartTotal());
     } else {
       cartBar.classList.add('hidden');
     }
   }
 
-  document.getElementById('sales-search').addEventListener('input', function (e) {
-    salesFilter.search = e.target.value.trim();
-    renderSales();
-  });
   document.getElementById('btn-view-cart').addEventListener('click', function () { goToScreen('cart'); });
   document.getElementById('btn-cart-back').addEventListener('click', function () { goToScreen('sales'); });
 
@@ -1207,9 +1307,9 @@
               '<span class="stepper-value">' + it.qty + '</span>' +
               '<button class="stepper-btn" data-action="cart-qty" data-id="' + it.id + '" data-delta="1">+</button>' +
             '</div>' +
-            '<div class="flex" style="gap:8px">' +
+            '<div class="flex" style="gap:8px;align-items:center">' +
               '<button class="btn btn-secondary btn-sm" data-action="cart-edit" data-id="' + it.id + '">แก้ไข</button>' +
-              '<button class="btn btn-danger-outline btn-sm" data-action="cart-delete" data-id="' + it.id + '">ลบ</button>' +
+              '<button class="icon-btn-trash" data-action="cart-delete" data-id="' + it.id + '" aria-label="ลบ"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>' +
             '</div>' +
           '</div>' +
         '</div>';
@@ -1539,10 +1639,8 @@
               '<div class="list-row-sub">' + (cat ? escapeHtml(cat.name) : 'ไม่มีหมวดหมู่') + '</div>' +
             '</div>' +
             '<div class="list-row-status"><span class="badge ' + (m.active ? 'badge-green' : 'badge-gray') + '">' + (m.active ? 'เปิดขาย' : 'งดขาย') + '</span></div>' +
-            '<label class="switch"><input type="checkbox" data-action="toggle-menu-active" data-id="' + m.id + '" ' + (m.active ? 'checked' : '') + '><span class="switch-track"></span></label>' +
             '<div class="list-row-actions">' +
               '<button class="icon-btn-plain" data-action="edit-menu" data-id="' + m.id + '"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z"/></svg></button>' +
-              '<button class="icon-btn-plain" data-action="delete-menu" data-id="' + m.id + '"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>' +
             '</div>' +
           '</div>';
       }).join('');
@@ -1566,7 +1664,6 @@
           '<div class="list-row-main"><div class="list-row-title">' + escapeHtml(c.name) + '</div><div class="list-row-sub">' + count + ' เมนู</div></div>' +
           '<div class="list-row-actions">' +
             '<button class="icon-btn-plain" data-action="edit-category" data-id="' + c.id + '"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z"/></svg></button>' +
-            '<button class="icon-btn-plain" data-action="delete-category" data-id="' + c.id + '"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>' +
           '</div>' +
         '</div>';
     }).join('');
@@ -1582,10 +1679,8 @@
       return '' +
         '<div class="list-row">' +
           '<div class="list-row-main"><div class="list-row-title">' + escapeHtml(a.name) + '</div><div class="list-row-sub">+' + money(a.price) + ' บาท</div></div>' +
-          '<label class="switch"><input type="checkbox" data-action="toggle-addon-active" data-id="' + a.id + '" ' + (a.active ? 'checked' : '') + '><span class="switch-track"></span></label>' +
           '<div class="list-row-actions">' +
             '<button class="icon-btn-plain" data-action="edit-addon" data-id="' + a.id + '"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z"/></svg></button>' +
-            '<button class="icon-btn-plain" data-action="delete-addon" data-id="' + a.id + '"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>' +
           '</div>' +
         '</div>';
     }).join('');
@@ -1601,10 +1696,8 @@
       return '' +
         '<div class="list-row">' +
           '<div class="list-row-main"><div class="list-row-title">' + escapeHtml(c.text) + '</div></div>' +
-          '<label class="switch"><input type="checkbox" data-action="toggle-comment-active" data-id="' + c.id + '" ' + (c.active ? 'checked' : '') + '><span class="switch-track"></span></label>' +
           '<div class="list-row-actions">' +
             '<button class="icon-btn-plain" data-action="edit-comment" data-id="' + c.id + '"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4Z"/></svg></button>' +
-            '<button class="icon-btn-plain" data-action="delete-comment" data-id="' + c.id + '"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>' +
           '</div>' +
         '</div>';
     }).join('');
@@ -1615,10 +1708,6 @@
     if (!btn) return;
     productsActiveTab = btn.getAttribute('data-id');
     renderProducts();
-  });
-  document.getElementById('products-search').addEventListener('input', function (e) {
-    productsFilter.search = e.target.value.trim();
-    renderProductItems();
   });
   document.getElementById('products-filter-tabs').addEventListener('click', function (e) {
     var btn = e.target.closest('[data-action="products-status-filter"]');
@@ -1638,13 +1727,18 @@
   function openMenuForm(menuId) {
     editingMenuId = menuId;
     var m = menuId ? state.menuItems.find(function (x) { return x.id === menuId; }) : null;
+    var deleteBtn = document.getElementById('btn-delete-menu');
+    deleteBtn.classList.toggle('hidden', !m);
+    if (m) deleteBtn.setAttribute('data-id', m.id);
     document.getElementById('menu-form-title').textContent = m ? 'แก้ไขเมนู' : 'เพิ่มเมนู';
     document.getElementById('menu-form-name').value = m ? m.name : '';
     document.getElementById('menu-form-price').value = m ? m.price : '';
     document.getElementById('menu-form-active').checked = m ? m.active : true;
     document.getElementById('menu-form-image').value = '';
     document.getElementById('menu-form-image-preview').innerHTML = m && m.thumbnail
-      ? '<img src="' + escapeHtml(resolveMenuThumbnail(m)) + '" alt="thumbnail preview" class="menu-image-preview-image">'
+      ? (resolveMenuThumbnail(m) === DEFAULT_MENU_THUMBNAIL
+        ? '<img src="Menu-img/empty-state-thumbnail.png" alt="thumbnail preview" class="menu-image-preview-image">'
+        : '<img src="' + escapeHtml(resolveMenuThumbnail(m)) + '" alt="thumbnail preview" class="menu-image-preview-image">')
       : '<div class="menu-image-placeholder">เพิ่มรูปภาพ</div>';
 
     var catSel = document.getElementById('menu-form-category');
@@ -1690,6 +1784,14 @@
     if (group) group.classList.toggle('has-error', !!hasError);
   }
   function clearFormError(inputId) { setFormError(inputId, false); }
+
+  document.getElementById('btn-delete-menu').addEventListener('click', function () {
+    var id = editingMenuId;
+    if (!id) return;
+    deleteTarget = { type: 'menu', id: id };
+    document.getElementById('delete-confirm-text').textContent = 'ต้องการลบเมนูนี้ใช่หรือไม่? การลบไม่สามารถย้อนกลับได้';
+    openOverlay('overlay-delete-confirm');
+  });
 
   document.getElementById('btn-save-menu').addEventListener('click', function () {
     var name = document.getElementById('menu-form-name').value.trim();
@@ -1740,11 +1842,23 @@
   function openCategoryForm(catId) {
     editingCategoryId = catId;
     var c = catId ? state.categories.find(function (x) { return x.id === catId; }) : null;
+    var deleteBtn = document.getElementById('btn-delete-category');
+    deleteBtn.classList.toggle('hidden', !c);
+    if (c) deleteBtn.setAttribute('data-id', c.id);
     document.getElementById('category-form-title').textContent = c ? 'แก้ไขหมวดหมู่' : 'เพิ่มหมวดหมู่';
     document.getElementById('category-form-name').value = c ? c.name : '';
     clearFormError('category-form-name');
     openOverlay('overlay-category-form');
   }
+
+  document.getElementById('btn-delete-category').addEventListener('click', function () {
+    var id = editingCategoryId;
+    if (!id) return;
+    deleteTarget = { type: 'category', id: id };
+    document.getElementById('delete-confirm-text').textContent = 'ต้องการลบหมวดหมู่นี้ใช่หรือไม่? เมนูในหมวดหมู่นี้จะไม่ถูกลบ';
+    openOverlay('overlay-delete-confirm');
+  });
+
   document.getElementById('btn-save-category').addEventListener('click', function () {
     var name = document.getElementById('category-form-name').value.trim();
     if (!name) { setFormError('category-form-name', true); return; }
@@ -1766,11 +1880,7 @@
     var id = btn.getAttribute('data-id');
     var idx = state.categories.findIndex(function (c) { return c.id === id; });
     if (action === 'edit-category') openCategoryForm(id);
-    else if (action === 'delete-category') {
-      deleteTarget = { type: 'category', id: id };
-      document.getElementById('delete-confirm-text').textContent = 'ต้องการลบหมวดหมู่นี้ใช่หรือไม่? เมนูในหมวดหมู่นี้จะไม่ถูกลบ';
-      openOverlay('overlay-delete-confirm');
-    } else if (action === 'cat-move-up' && idx > 0) {
+    else if (action === 'cat-move-up' && idx > 0) {
       var tmp = state.categories[idx - 1]; state.categories[idx - 1] = state.categories[idx]; state.categories[idx] = tmp;
       save(); renderCategoriesList();
     } else if (action === 'cat-move-down' && idx < state.categories.length - 1) {
@@ -1783,21 +1893,35 @@
   function openAddonForm(addonId) {
     editingAddonId = addonId;
     var a = addonId ? state.addons.find(function (x) { return x.id === addonId; }) : null;
+    var deleteBtn = document.getElementById('btn-delete-addon');
+    deleteBtn.classList.toggle('hidden', !a);
+    if (a) deleteBtn.setAttribute('data-id', a.id);
     document.getElementById('addon-form-title').textContent = a ? 'แก้ไขรายการเสริม' : 'เพิ่มรายการเสริม';
     document.getElementById('addon-form-name').value = a ? a.name : '';
     document.getElementById('addon-form-price').value = a ? a.price : '';
+    document.getElementById('addon-form-active').checked = a ? a.active : true;
     clearFormError('addon-form-name');
     openOverlay('overlay-addon-form');
   }
+
+  document.getElementById('btn-delete-addon').addEventListener('click', function () {
+    var id = editingAddonId;
+    if (!id) return;
+    deleteTarget = { type: 'addon', id: id };
+    document.getElementById('delete-confirm-text').textContent = 'ต้องการลบรายการเสริมนี้ใช่หรือไม่?';
+    openOverlay('overlay-delete-confirm');
+  });
+
   document.getElementById('btn-save-addon').addEventListener('click', function () {
     var name = document.getElementById('addon-form-name').value.trim();
     var price = Number(document.getElementById('addon-form-price').value) || 0;
+    var active = document.getElementById('addon-form-active').checked;
     if (!name) { setFormError('addon-form-name', true); return; }
     if (editingAddonId) {
       var a = state.addons.find(function (x) { return x.id === editingAddonId; });
-      a.name = name; a.price = price;
+      a.name = name; a.price = price; a.active = active;
     } else {
-      state.addons.push({ id: uid(), name: name, price: price, active: true });
+      state.addons.push({ id: uid(), name: name, price: price, active: active });
     }
     save();
     closeOverlay('overlay-addon-form');
@@ -1810,34 +1934,39 @@
     var action = btn.getAttribute('data-action');
     var id = btn.getAttribute('data-id');
     if (action === 'edit-addon') openAddonForm(id);
-    else if (action === 'delete-addon') {
-      deleteTarget = { type: 'addon', id: id };
-      document.getElementById('delete-confirm-text').textContent = 'ต้องการลบรายการเสริมนี้ใช่หรือไม่?';
-      openOverlay('overlay-delete-confirm');
-    } else if (action === 'toggle-addon-active') {
-      var a = state.addons.find(function (x) { return x.id === id; });
-      a.active = btn.checked;
-      save();
-    }
   });
 
   // -------- Preset comment form --------
   function openCommentForm(commentId) {
     editingCommentId = commentId;
     var c = commentId ? state.comments.find(function (x) { return x.id === commentId; }) : null;
+    var deleteBtn = document.getElementById('btn-delete-comment');
+    deleteBtn.classList.toggle('hidden', !c);
+    if (c) deleteBtn.setAttribute('data-id', c.id);
     document.getElementById('comment-form-title').textContent = c ? 'แก้ไขหมายเหตุ' : 'เพิ่มหมายเหตุ';
     document.getElementById('comment-form-text').value = c ? c.text : '';
+    document.getElementById('comment-form-active').checked = c ? c.active : true;
     clearFormError('comment-form-text');
     openOverlay('overlay-comment-form');
   }
+
+  document.getElementById('btn-delete-comment').addEventListener('click', function () {
+    var id = editingCommentId;
+    if (!id) return;
+    deleteTarget = { type: 'comment', id: id };
+    document.getElementById('delete-confirm-text').textContent = 'ต้องการลบหมายเหตุนี้ใช่หรือไม่?';
+    openOverlay('overlay-delete-confirm');
+  });
+
   document.getElementById('btn-save-comment').addEventListener('click', function () {
     var text = document.getElementById('comment-form-text').value.trim();
+    var active = document.getElementById('comment-form-active').checked;
     if (!text) { setFormError('comment-form-text', true); return; }
     if (editingCommentId) {
       var c = state.comments.find(function (x) { return x.id === editingCommentId; });
-      c.text = text;
+      c.text = text; c.active = active;
     } else {
-      state.comments.push({ id: uid(), text: text, active: true });
+      state.comments.push({ id: uid(), text: text, active: active });
     }
     save();
     closeOverlay('overlay-comment-form');
@@ -1850,15 +1979,6 @@
     var action = btn.getAttribute('data-action');
     var id = btn.getAttribute('data-id');
     if (action === 'edit-comment') openCommentForm(id);
-    else if (action === 'delete-comment') {
-      deleteTarget = { type: 'comment', id: id };
-      document.getElementById('delete-confirm-text').textContent = 'ต้องการลบหมายเหตุนี้ใช่หรือไม่?';
-      openOverlay('overlay-delete-confirm');
-    } else if (action === 'toggle-comment-active') {
-      var c = state.comments.find(function (x) { return x.id === id; });
-      c.active = btn.checked;
-      save();
-    }
   });
 
   // -------- Generic delete confirmation --------
@@ -2313,9 +2433,13 @@
      14. GLOBAL: open customize sheet from sales grid
      ======================================================================= */
   document.getElementById('sales-menu-grid').addEventListener('click', function (e) {
-    var btn = e.target.closest('[data-action="open-customize"]');
-    if (!btn || btn.disabled) return;
-    openCustomizeSheet(btn.getAttribute('data-id'), null);
+    var card = e.target.closest('.menu-card');
+    if (!card || card.classList.contains('unavailable')) return;
+    var trigger = e.target.closest('[data-action="open-customize"]');
+    if (trigger && trigger.disabled) return;
+    var menuId = (trigger || card).getAttribute('data-id');
+    if (!menuId) return;
+    openCustomizeSheet(menuId, null);
   });
   document.getElementById('sales-category-tabs').addEventListener('click', function (e) {
     var btn = e.target.closest('[data-action="sales-filter-cat"]');
