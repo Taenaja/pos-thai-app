@@ -284,11 +284,11 @@
       </div>
       <div class="sheet-body" id="customize-body"></div>
       <div class="sheet-footer">
-        <div class="flex-between mt-8" style="margin-bottom:10px">
-          <span class="text-secondary font-bold">ราคารวม</span>
-          <span class="font-bold" id="customize-total" style="font-size:var(--fs-h2);color:var(--color-primary-dark)">0 บาท</span>
-        </div>
-        <button class="btn btn-primary btn-block btn-lg" id="btn-add-to-cart">เพิ่มลงตะกร้า</button>
+        <button class="btn btn-primary btn-block btn-lg cart-submit-btn" id="btn-add-to-cart">
+          <span class="cart-submit-qty" id="cart-submit-qty">1</span>
+          <span class="cart-submit-label">เพิ่มลงตะกร้า</span>
+          <span class="cart-submit-price" id="cart-submit-price">0 บาท</span>
+        </button>
       </div>
     </div>
   </div>
@@ -1201,7 +1201,8 @@
 
   function updateCustomizeTotal() {
     var total = customizeUnitPrice() * customizeState.qty;
-    document.getElementById('customize-total').textContent = money(total) + ' บาท';
+    document.getElementById('cart-submit-qty').textContent = customizeState.qty;
+    document.getElementById('cart-submit-price').textContent = money(total) + ' บาท';
   }
 
   document.getElementById('customize-body').addEventListener('click', function (e) {
